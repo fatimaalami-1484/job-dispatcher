@@ -1,5 +1,10 @@
 import express from "express";
-import { connect, StringCodec } from "nats";
+import {
+  connect,
+  StringCodec,
+  AckPolicy,
+  DeliverPolicy,
+} from "nats";
 
 const app = express();
 const PORT = 3000;
@@ -9,15 +14,29 @@ const nc = await connect({
 });
 
 const sc = StringCodec();
+const js = nc.jetstream();
+const jsm = await nc.jetstreamManager();
 
 console.log("Central Service connected to NATS");
 
-// Listen for agent responses
-const replySub = nc.subscribe("hello.central");
+// Create durable consumer for Central replies
+try {
+  await jsm.consumers.add("JOBS", {
+    durable_name: "central",
+    filter_subject: "hello.central",
+    ack_policy: AckPolicy.Explicit,
+    deliver_policy: DeliverPolicy.All,
+  });
+} catch {}
+
+// Listen for replies from agents
+const consumer = await js.consumers.get("JOBS", "central");
+const messages = await consumer.consume();
 
 (async () => {
-  for await (const msg of replySub) {
+  for await (const msg of messages) {
     console.log(`Central heard: ${sc.decode(msg.data)}`);
+    msg.ack();
   }
 })();
 
@@ -25,12 +44,13 @@ app.get("/", (_, res) => {
   res.send("Central Service");
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
   console.log(`Central Service is running on port ${PORT}`);
 
-  // Send a greeting to Agent 1 after startup
-  setTimeout(() => {
-    nc.publish("hello.agent1", sc.encode("Hello Agent 1"));
-    console.log("Greeting sent to Agent 1");
-  }, 2000);
+  await js.publish(
+    "hello.agent-1",
+    sc.encode("Hello Agent 1")
+  );
+
+  console.log("Hello stored in JetStream for Agent 1");
 });

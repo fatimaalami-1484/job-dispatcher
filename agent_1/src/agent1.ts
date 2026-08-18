@@ -1,5 +1,10 @@
 import express from "express";
-import { connect, StringCodec } from "nats";
+import {
+  connect,
+  StringCodec,
+  AckPolicy,
+  DeliverPolicy,
+} from "nats";
 
 const app = express();
 const PORT = 3001;
@@ -9,25 +14,52 @@ const nc = await connect({
 });
 
 const sc = StringCodec();
+const js = nc.jetstream();
+const jsm = await nc.jetstreamManager();
 
 console.log("Agent 1 connected to NATS");
 
-// Listen for messages addressed to Agent 1
-const sub = nc.subscribe("hello.agent1");
+// Register Agent 1
+await js.publish(
+  "agent.register",
+  sc.encode(
+    JSON.stringify({
+      agentId: "agent-1",
+      status: "online",
+    })
+  )
+);
+
+console.log("Agent 1 registered successfully");
+
+// Create durable consumer
+try {
+  await jsm.consumers.add("JOBS", {
+    durable_name: "agent-1",
+    filter_subject: "hello.agent-1",
+    ack_policy: AckPolicy.Explicit,
+    deliver_policy: DeliverPolicy.All,
+  });
+} catch {}
+
+// Consume stored messages
+const consumer = await js.consumers.get("JOBS", "agent-1");
+const messages = await consumer.consume();
 
 (async () => {
-  for await (const msg of sub) {
+  for await (const msg of messages) {
     const text = sc.decode(msg.data);
 
     console.log(`Received from Central: ${text}`);
 
-    // Introduce Agent 1 to Central
-    nc.publish(
+    await js.publish(
       "hello.central",
       sc.encode("Hello Central Service, I am Agent 1.")
     );
 
     console.log('Agent 1: "Hello Central Service, I am Agent 1."');
+
+    msg.ack();
   }
 })();
 
