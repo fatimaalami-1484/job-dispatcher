@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/fatimaalami-1484/job-dispatcher/issues"
   },
-  "homepage": "https://github.com/fatimaalami-1484/job-dispatcher#readme"
+  "homepage": "https://github.com/fatimaalami-1484/job-dispatcher#readme",
+  "dependencies": {
+    "dotenv": "^17.4.2"
+  }
 }
