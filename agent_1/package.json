@@ -6,7 +6,8 @@
     "dev": "tsx src/agent1.ts"
   },
   "dependencies": {
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "nats": "^2.29.3"
   },
   "devDependencies": {
     "@types/express": "^5.0.3",
