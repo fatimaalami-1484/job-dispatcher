@@ -19,9 +19,9 @@ const jsm = await nc.jetstreamManager();
 
 console.log("Central Service connected to NATS");
 
-// Create durable consumer for Central replies
+// Create durable consumer for replies
 try {
-  await jsm.consumers.add("JOBS", {
+  await jsm.consumers.add("HELLO", {
     durable_name: "central",
     filter_subject: "hello.central",
     ack_policy: AckPolicy.Explicit,
@@ -30,7 +30,7 @@ try {
 } catch {}
 
 // Listen for replies from agents
-const consumer = await js.consumers.get("JOBS", "central");
+const consumer = await js.consumers.get("HELLO", "central");
 const messages = await consumer.consume();
 
 (async () => {
@@ -44,7 +44,7 @@ app.get("/", (_, res) => {
   res.send("Central Service");
 });
 
-// Send hello messages when the service starts
+// Send Hello messages when Central starts
 app.listen(PORT, async () => {
   console.log(`Central Service is running on port ${PORT}`);
 
@@ -52,23 +52,11 @@ app.listen(PORT, async () => {
     "hello.agent-1",
     sc.encode("Hello Agent 1")
   );
-  console.log("Hello stored in JetStream for Agent 1");
+  console.log("Hello stored for Agent 1");
 
   await js.publish(
     "hello.agent-2",
     sc.encode("Hello Agent 2")
   );
-  console.log("Hello stored in JetStream for Agent 2");
-});
-
-// Manual test endpoint for Agent 2
-app.get("/hello/agent2", async (_, res) => {
-  await js.publish(
-    "hello.agent-2",
-    sc.encode("Hello Agent 2")
-  );
-
-  console.log("Hello sent to Agent 2.");
-
-  res.send("Hello sent to Agent 2.");
+  console.log("Hello stored for Agent 2");
 });

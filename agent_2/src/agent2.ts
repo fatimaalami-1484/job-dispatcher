@@ -21,7 +21,7 @@ console.log("Agent 2 connected to NATS");
 
 // Create durable consumer
 try {
-  await jsm.consumers.add("JOBS", {
+  await jsm.consumers.add("HELLO", {
     durable_name: "agent-2",
     filter_subject: "hello.agent-2",
     ack_policy: AckPolicy.Explicit,
@@ -29,8 +29,8 @@ try {
   });
 } catch {}
 
-// Consume messages from JetStream
-const consumer = await js.consumers.get("JOBS", "agent-2");
+// Listen for Hello messages
+const consumer = await js.consumers.get("HELLO", "agent-2");
 const messages = await consumer.consume();
 
 (async () => {
@@ -44,7 +44,7 @@ const messages = await consumer.consume();
       sc.encode("Hello Central Service, I am Agent 2.")
     );
 
-    console.log("Reply sent to Central Service.");
+    console.log('Agent 2: "Hello Central Service, I am Agent 2."');
 
     msg.ack();
   }

@@ -19,22 +19,9 @@ const jsm = await nc.jetstreamManager();
 
 console.log("Agent 1 connected to NATS");
 
-// Register Agent 1
-await js.publish(
-  "agent.register",
-  sc.encode(
-    JSON.stringify({
-      agentId: "agent-1",
-      status: "online",
-    })
-  )
-);
-
-console.log("Agent 1 registered successfully");
-
 // Create durable consumer
 try {
-  await jsm.consumers.add("JOBS", {
+  await jsm.consumers.add("HELLO", {
     durable_name: "agent-1",
     filter_subject: "hello.agent-1",
     ack_policy: AckPolicy.Explicit,
@@ -42,8 +29,8 @@ try {
   });
 } catch {}
 
-// Consume stored messages
-const consumer = await js.consumers.get("JOBS", "agent-1");
+// Listen for Hello messages
+const consumer = await js.consumers.get("HELLO", "agent-1");
 const messages = await consumer.consume();
 
 (async () => {
