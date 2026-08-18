@@ -44,6 +44,7 @@ app.get("/", (_, res) => {
   res.send("Central Service");
 });
 
+// Send hello messages when the service starts
 app.listen(PORT, async () => {
   console.log(`Central Service is running on port ${PORT}`);
 
@@ -51,6 +52,23 @@ app.listen(PORT, async () => {
     "hello.agent-1",
     sc.encode("Hello Agent 1")
   );
-
   console.log("Hello stored in JetStream for Agent 1");
+
+  await js.publish(
+    "hello.agent-2",
+    sc.encode("Hello Agent 2")
+  );
+  console.log("Hello stored in JetStream for Agent 2");
+});
+
+// Manual test endpoint for Agent 2
+app.get("/hello/agent2", async (_, res) => {
+  await js.publish(
+    "hello.agent-2",
+    sc.encode("Hello Agent 2")
+  );
+
+  console.log("Hello sent to Agent 2.");
+
+  res.send("Hello sent to Agent 2.");
 });
