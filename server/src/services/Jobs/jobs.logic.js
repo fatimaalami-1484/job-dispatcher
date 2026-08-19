@@ -1,5 +1,6 @@
-const { randomUUID } = require('crypto');
 const JobsModel = require('./jobs.model');
+const { getNextSequence } = require('../../helpers/Counter');
+const { NotFoundError } = require('../../helpers/APIErros');
 
 const createJob = async (context) => {
     const { body } = context;
@@ -13,7 +14,7 @@ const createJob = async (context) => {
     }
 
     const job = {
-        id: randomUUID(),
+        id: await getNextSequence('jobs'),
         finishedAt: null,
         agentId: body.agentId,
         fileName: body.fileName,
@@ -29,6 +30,25 @@ const createJob = async (context) => {
     };
 };
 
+const getJobById = async (context) => {
+    const { params } = context;
+
+    const job = await JobsModel.findOne(
+        { id: Number(params.id) },
+        { projection: JobsModel.getProjection({}) }
+    );
+
+    if (!job) {
+        throw new NotFoundError('جاب یافت نشد');
+    }
+
+    return {
+        message: 'اطلاعات جاب با موفقیت دریافت شد',
+        data: JobsModel.getResponseObject(job)
+    };
+};
+
 module.exports = {
-    createJob
+    createJob,
+    getJobById
 };

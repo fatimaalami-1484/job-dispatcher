@@ -7,4 +7,10 @@ router.post(
     JobsController.createJob
 );
 
+
+router.get(
+    '/jobs/:id', 
+    JobsController.getJobById
+);
+
 module.exports = router;

@@ -191,3 +191,53 @@
   level: 'error',
   timestamp: '2026-08-19T04:36:40.902Z'
 }
+{
+  method: 'GET',
+  originalUrl: '/jobs',
+  status: 404,
+  message: 'مسیر یافت نشد',
+  stack: 'Error: مسیر یافت نشد\n' +
+    '    at D:\\Fatemeh\\PART\\JobMesh\\server\\src\\app.js:62:34\n' +
+    '    at Layer.handleRequest (D:\\Fatemeh\\PART\\JobMesh\\node_modules\\router\\lib\\layer.js:152:17)\n' +
+    '    at trimPrefix (D:\\Fatemeh\\PART\\JobMesh\\node_modules\\router\\index.js:342:13)\n' +
+    '    at D:\\Fatemeh\\PART\\JobMesh\\node_modules\\router\\index.js:297:9\n' +
+    '    at processParams (D:\\Fatemeh\\PART\\JobMesh\\node_modules\\router\\index.js:582:12)\n' +
+    '    at next (D:\\Fatemeh\\PART\\JobMesh\\node_modules\\router\\index.js:291:5)\n' +
+    '    at D:\\Fatemeh\\PART\\JobMesh\\node_modules\\router\\index.js:688:15\n' +
+    '    at next (D:\\Fatemeh\\PART\\JobMesh\\node_modules\\router\\index.js:276:14)\n' +
+    '    at Function.handle (D:\\Fatemeh\\PART\\JobMesh\\node_modules\\router\\index.js:186:3)\n' +
+    '    at router (D:\\Fatemeh\\PART\\JobMesh\\node_modules\\router\\index.js:60:12)',
+  level: 'error',
+  timestamp: '2026-08-19T04:43:37.522Z'
+}
+{
+  method: 'GET',
+  originalUrl: '/jobs/1',
+  status: 404,
+  message: 'جاب یافت نشد',
+  stack: 'Error: جاب یافت نشد\n' +
+    '    at Object.getJobById (D:\\Fatemeh\\PART\\JobMesh\\server\\src\\services\\Jobs\\jobs.logic.js:42:15)\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async getJobById (D:\\Fatemeh\\PART\\JobMesh\\server\\src\\services\\Jobs\\jobs.controller.js:20:35)',
+  level: 'error',
+  timestamp: '2026-08-19T04:55:34.765Z'
+}
+{
+  method: 'GET',
+  originalUrl: '/jobs',
+  status: 404,
+  message: 'مسیر یافت نشد',
+  stack: 'Error: مسیر یافت نشد\n' +
+    '    at D:\\Fatemeh\\PART\\JobMesh\\server\\src\\app.js:62:34\n' +
+    '    at Layer.handleRequest (D:\\Fatemeh\\PART\\JobMesh\\node_modules\\router\\lib\\layer.js:152:17)\n' +
+    '    at trimPrefix (D:\\Fatemeh\\PART\\JobMesh\\node_modules\\router\\index.js:342:13)\n' +
+    '    at D:\\Fatemeh\\PART\\JobMesh\\node_modules\\router\\index.js:297:9\n' +
+    '    at processParams (D:\\Fatemeh\\PART\\JobMesh\\node_modules\\router\\index.js:582:12)\n' +
+    '    at next (D:\\Fatemeh\\PART\\JobMesh\\node_modules\\router\\index.js:291:5)\n' +
+    '    at D:\\Fatemeh\\PART\\JobMesh\\node_modules\\router\\index.js:688:15\n' +
+    '    at next (D:\\Fatemeh\\PART\\JobMesh\\node_modules\\router\\index.js:276:14)\n' +
+    '    at Function.handle (D:\\Fatemeh\\PART\\JobMesh\\node_modules\\router\\index.js:186:3)\n' +
+    '    at router (D:\\Fatemeh\\PART\\JobMesh\\node_modules\\router\\index.js:60:12)',
+  level: 'error',
+  timestamp: '2026-08-19T04:56:24.240Z'
+}
