@@ -17,11 +17,15 @@ const createJob = async (context) => {
 
     const job = {
         id: await getNextSequence('jobs'),
+        createdAt: new Date(),
+        startedAt: null,
         finishedAt: null,
+        duration: null,
         agentId: body.agentId,
         fileName: body.fileName,
         timeout: body.timeout,
-        status: 'PENDING'
+        status: 'PENDING',
+        result: null
     };
 
     // Save the job in MongoDB

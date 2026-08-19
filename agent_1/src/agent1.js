@@ -17,8 +17,10 @@ const PORT = 3001;
 
 // Execute a job file with Node.js
 const executeJob = (job) => {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         const filePath = path.join(JOBS_DIRECTORY, job.fileName);
+
+        const startedAt = new Date();
 
         console.log(`Starting Job ${job.jobId}`);
         console.log(`File: ${filePath}`);
@@ -39,30 +41,63 @@ const executeJob = (job) => {
         const timeout = setTimeout(() => {
             child.kill();
 
-            reject(new Error(`Job ${job.jobId} timed out`));
+            const finishedAt = new Date();
+
+            resolve({
+                jobId: job.jobId,
+                agentId: job.agentId,
+                status: 'TIMEOUT',
+                startedAt,
+                finishedAt,
+                duration: finishedAt - startedAt,
+                result: {
+                    success: false,
+                    stdout,
+                    stderr: 'Job execution timed out'
+                }
+            });
         }, job.timeout * 1000);
 
         child.on('close', (code) => {
             clearTimeout(timeout);
 
-            if (code === 0) {
-                resolve({
-                    success: true,
+            const finishedAt = new Date();
+
+            const success = code === 0;
+
+            resolve({
+                jobId: job.jobId,
+                agentId: job.agentId,
+                status: success ? 'COMPLETED' : 'FAILED',
+                startedAt,
+                finishedAt,
+                duration: finishedAt - startedAt,
+                result: {
+                    success,
                     stdout,
                     stderr
-                });
-            } else {
-                resolve({
-                    success: false,
-                    stdout,
-                    stderr
-                });
-            }
+                }
+            });
         });
 
         child.on('error', (error) => {
             clearTimeout(timeout);
-            reject(error);
+
+            const finishedAt = new Date();
+
+            resolve({
+                jobId: job.jobId,
+                agentId: job.agentId,
+                status: 'FAILED',
+                startedAt,
+                finishedAt,
+                duration: finishedAt - startedAt,
+                result: {
+                    success: false,
+                    stdout,
+                    stderr: error.message
+                }
+            });
         });
     });
 };
@@ -146,6 +181,14 @@ const startAgent = async () => {
 
                 console.log('Job Result:');
                 console.log(result);
+
+                // Publish the job result to the RESULTS stream
+                await js.publish(
+                    'results.agent-1',
+                    sc.encode(JSON.stringify(result))
+                );
+
+                console.log('Job result sent to Central');
 
                 msg.ack();
             } catch (err) {

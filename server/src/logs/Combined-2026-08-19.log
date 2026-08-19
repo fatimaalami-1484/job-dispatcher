@@ -9,3 +9,10 @@
 {"level":"info","message":"development server running on port: 3000","timestamp":"2026-08-19T06:24:49.303Z"}
 {"level":"debug","message":"\"POST /jobs HTTP/1.1\" 201 - ⌛ 617.262 ms - \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0\"\n","timestamp":"2026-08-19T06:25:01.691Z"}
 {"level":"debug","message":"\"POST /jobs HTTP/1.1\" 201 - ⌛ 276.118 ms - \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0\"\n","timestamp":"2026-08-19T06:26:19.432Z"}
+{"level":"info","message":"Mongodb stage-db connected successfully to mongodb+srv://fatimaalami7780_db_user:49lhEcKlEDeRFNtC@jobmeshcluster.8va9zkz.mongodb.net/","timestamp":"2026-08-19T06:37:40.119Z"}
+{"level":"info","message":"development server running on port: 3000","timestamp":"2026-08-19T06:37:40.140Z"}
+{"level":"debug","message":"\"POST /jobs HTTP/1.1\" 201 - ⌛ 597.848 ms - \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0\"\n","timestamp":"2026-08-19T06:37:53.762Z"}
+{"level":"error","message":"Mongodb stage-db connection failed to mongodb+srv://fatimaalami7780_db_user:49lhEcKlEDeRFNtC@jobmeshcluster.8va9zkz.mongodb.net/","timestamp":"2026-08-19T06:43:24.730Z"}
+{"level":"info","message":"Mongodb stage-db connected successfully to mongodb+srv://fatimaalami7780_db_user:49lhEcKlEDeRFNtC@jobmeshcluster.8va9zkz.mongodb.net/","timestamp":"2026-08-19T06:43:59.189Z"}
+{"level":"info","message":"development server running on port: 3000","timestamp":"2026-08-19T06:43:59.215Z"}
+{"level":"debug","message":"\"POST /jobs HTTP/1.1\" 201 - ⌛ 364.579 ms - \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0\"\n","timestamp":"2026-08-19T06:44:07.007Z"}

@@ -1,0 +1,5 @@
+{
+  message: 'Mongodb stage-db connection failed to mongodb+srv://fatimaalami7780_db_user:49lhEcKlEDeRFNtC@jobmeshcluster.8va9zkz.mongodb.net/',
+  level: 'error',
+  timestamp: '2026-08-19T06:43:24.729Z'
+}

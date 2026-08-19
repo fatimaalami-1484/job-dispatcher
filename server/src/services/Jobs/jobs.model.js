@@ -7,11 +7,14 @@ class JobsModel extends AbstractModel {
         const response = {
             id: doc.id,
             createdAt: doc.createdAt,
+            startedAt: doc.startedAt,
             finishedAt: doc.finishedAt,
+            duration: doc.duration,
             agentId: doc.agentId,
             fileName: doc.fileName,
             timeout: doc.timeout,
-            status: doc.status
+            status: doc.status,
+            result: doc.result
         };
 
         exclude.map((key) => delete response[key]);
@@ -24,11 +27,14 @@ class JobsModel extends AbstractModel {
             _id: 0,
             id: 1,
             createdAt: 1,
+            startedAt: 1,
             finishedAt: 1,
+            duration: 1,
             agentId: 1,
             fileName: 1,
             timeout: 1,
-            status: 1
+            status: 1,
+            result: 1
         };
 
         for (const [key, value] of Object.entries(project)) {

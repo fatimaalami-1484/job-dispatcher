@@ -11,6 +11,18 @@ class AbstractModel {
         await database.mongodb.collection(this.COLLECTION_NAME).insertOne(doc);
     }
 
+    static async updateOne(filter, update) {
+        filter.deletedAt = null;
+
+        update.updatedAt = new Date();
+
+        return await database.mongodb
+            .collection(this.COLLECTION_NAME)
+            .updateOne(filter, {
+                $set: update
+            });
+    }
+
     static async findOne(filter, options = { projection: {} }) {
         filter.deletedAt = null;
 
