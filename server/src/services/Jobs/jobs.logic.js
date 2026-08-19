@@ -1,7 +1,9 @@
 const JobsModel = require('./jobs.model');
 const { getNextSequence } = require('../../helpers/Counter');
 const { NotFoundError } = require('../../helpers/APIErros');
+const NatsService = require('../Nats/nats.service');
 
+// Create a new job
 const createJob = async (context) => {
     const { body } = context;
 
@@ -22,7 +24,18 @@ const createJob = async (context) => {
         status: 'PENDING'
     };
 
+    // Save the job in MongoDB
     await JobsModel.insertOne(job);
+
+    // Publish the job to the target agent
+    const subject = `jobs.${job.agentId}`;
+
+    await NatsService.publish(subject, {
+        jobId: job.id,
+        agentId: job.agentId,
+        fileName: job.fileName,
+        timeout: job.timeout
+    });
 
     return {
         message: 'جاب با موفقیت ایجاد شد',
@@ -30,6 +43,7 @@ const createJob = async (context) => {
     };
 };
 
+// Get job information by ID
 const getJobById = async (context) => {
     const { params } = context;
 

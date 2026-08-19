@@ -1,0 +1,5 @@
+{"level":"info","message":"Mongodb stage-db connected successfully to mongodb+srv://fatimaalami7780_db_user:49lhEcKlEDeRFNtC@jobmeshcluster.8va9zkz.mongodb.net/","timestamp":"2026-08-19T05:58:29.984Z"}
+{"level":"info","message":"development server running on port: 3000","timestamp":"2026-08-19T05:58:30.034Z"}
+{"level":"info","message":"Mongodb stage-db connected successfully to mongodb+srv://fatimaalami7780_db_user:49lhEcKlEDeRFNtC@jobmeshcluster.8va9zkz.mongodb.net/","timestamp":"2026-08-19T06:11:28.460Z"}
+{"level":"info","message":"development server running on port: 3000","timestamp":"2026-08-19T06:11:28.478Z"}
+{"level":"debug","message":"\"POST /jobs HTTP/1.1\" 201 - ⌛ 2774.834 ms - \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0\"\n","timestamp":"2026-08-19T06:12:18.351Z"}
