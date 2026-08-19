@@ -15,7 +15,7 @@ const { NotFoundError } = require('./helpers/APIErros');
 const { corsOptions } = require('./config');
 const Tools = require('./helpers/Tools');
 
-const JobsRoute = require('./services/Jobs/jobs.route');
+const services = require('./services');
 
 
 
@@ -55,8 +55,8 @@ app.get('/health', (req, res) => {
     res.status(200).send(Tools.successResponseGenerator('سرویس در حال اجرا می‌باشد'));
 });
 
-// Jobs routes
-app.use(JobsRoute);
+// routes
+app.use(services);
 
 // Handle 404 errors
 app.use((req, res, next) => next(new NotFoundError('مسیر یافت نشد')));

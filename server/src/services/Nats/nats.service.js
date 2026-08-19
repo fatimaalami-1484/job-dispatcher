@@ -5,7 +5,8 @@ const {
     DeliverPolicy
 } = require('nats');
 
-const OrdersModel = require('../orders/jobs.model');
+const OrdersModel = require('../orders/orders.model');
+const database = require('../../database');
 
 let nc;
 let js;
@@ -14,79 +15,55 @@ let jsm;
 const sc = StringCodec();
 
 
-// ==========================================
 // Process Job Result
-// ==========================================
-
 const processJobResult = async (msg, agentId) => {
-
     try {
-
         const result = JSON.parse(
             sc.decode(msg.data)
         );
 
-        console.log(
-            `Received Job Result from ${agentId}:`
-        );
+        console.log(`Received Job Result from ${agentId}:`);
 
         console.log(result);
 
-
         const updateResult =
             await OrdersModel.updateOne(
-                { id: result.jobId },
+                { id: result.orderId },
                 {
-                    status: result.status,
-                    startedAt: result.startedAt,
-                    finishedAt: result.finishedAt,
-                    duration: result.duration,
-                    result: result.result
+                    $set: {
+                        status: result.status,
+                        startedAt: result.startedAt,
+                        finishedAt: result.finishedAt,
+                        duration: result.duration,
+                        result: result.result
+                    }
                 }
             );
-
 
         console.log(
             'MongoDB update result:',
             updateResult
         );
 
-
         if (updateResult.matchedCount === 0) {
-
-            console.log(
-                `Job ${result.jobId} was NOT found in MongoDB`
-            );
+            console.log(`Order ${result.orderId} was NOT found in MongoDB`);
 
         } else {
-
-            console.log(
-                `Job ${result.jobId} updated successfully`
-            );
-
+            console.log(`Order ${result.orderId} updated successfully`);
         }
-
 
         msg.ack();
 
     } catch (err) {
-
         console.error(
             `Failed to process ${agentId} job result:`,
             err
         );
-
         msg.ack();
-
     }
-
 };
 
-
-// ==========================================
 // Create Result Consumer
-// ==========================================
-
 const createResultConsumer = async (
     streamName,
     durableName,
@@ -95,7 +72,6 @@ const createResultConsumer = async (
 ) => {
 
     try {
-
         await jsm.consumers.add(
             streamName,
             {
@@ -105,15 +81,166 @@ const createResultConsumer = async (
                 deliver_policy: DeliverPolicy.New
             }
         );
+        console.log(`${agentId} results consumer created`);
+
+    } catch (err) {
+        console.log(`${agentId} results consumer already exists`);
+    }
+
+    const consumer =
+        await js.consumers.get(
+            streamName,
+            durableName
+        );
+
+    const messages =
+        await consumer.consume();
+
+    (async () => {
+        for await (const msg of messages) {
+            await processJobResult(
+                msg,
+                agentId
+            );
+        }
+    })();
+};
+
+// Create Job Status Consumer
+const createJobStatusConsumer = async () => {
+    try {
+        await jsm.consumers.add(
+            'JOB_STATUS',
+            {
+                durable_name: 'central-job-status',
+                ack_policy: AckPolicy.Explicit,
+                deliver_policy: DeliverPolicy.New
+            }
+        );
+        console.log('Job status consumer created');
+
+    } catch (err) {
+        console.log('Job status consumer already exists');
+    }
+
+    const statusConsumer =
+        await js.consumers.get(
+            'JOB_STATUS',
+            'central-job-status'
+        );
+
+    const statusMessages =
+        await statusConsumer.consume();
+
+    (async () => {
+        for await (const msg of statusMessages) {
+            try {
+                const statusUpdate =
+                    JSON.parse(
+                        sc.decode(msg.data)
+                    );
+
+                console.log('Received Job Status:');
+                console.log(statusUpdate);
+
+                const updateResult =
+                    await OrdersModel.updateOne(
+                        {
+                            id: statusUpdate.orderId,
+                            status: database.enums.STATUS.PENDING
+                        },
+                        {
+                            $set: {
+                                status: statusUpdate.status
+                            }
+                        }
+                    );
+
+                console.log(
+                    'Job status update result:',
+                    updateResult
+                );
+
+                if (
+                    updateResult.matchedCount === 0
+                ) {
+                    console.log(`Order ${statusUpdate.orderId} was NOT found in MongoDB`);
+
+                } else {
+                    console.log(`Order ${statusUpdate.orderId} status updated to ${statusUpdate.status}`);
+                }
+                msg.ack();
+
+            } catch (err) {
+                console.error(
+                    'Failed to process job status:',
+                    err
+                );
+                msg.ack();
+            }
+        }
+    })();
+};
+
+// Create HELLO Consumer
+const createHelloConsumer = async () => {
+    try {
+        await jsm.consumers.add(
+            'HELLO',
+            {
+                durable_name: 'central',
+                filter_subject: 'hello.central',
+                ack_policy: AckPolicy.Explicit,
+                deliver_policy: DeliverPolicy.All
+            }
+        );
+        console.log('Hello consumer created');
+
+    } catch {
+        console.log('Hello consumer already exists');
+    }
+
+    const helloConsumer =
+        await js.consumers.get(
+            'HELLO',
+            'central'
+        );
+
+    const helloMessages =
+        await helloConsumer.consume();
+    (async () => {
+        for await (const msg of helloMessages) {
+            console.log(
+                `Central heard: ${sc.decode(msg.data)}`
+            );
+            msg.ack();
+        }
+    })();
+};
+
+// Create Order Received Consumer
+const createOrderReceivedConsumer = async () => {
+
+    try {
+
+        await jsm.consumers.add(
+            'ORDERS',
+            {
+                durable_name: 'central-orders-received',
+                filter_subject: 'orders.received',
+                ack_policy: AckPolicy.Explicit,
+                deliver_policy: DeliverPolicy.New
+            }
+        );
 
         console.log(
-            `${agentId} results consumer created`
+            'Order received consumer created'
         );
 
     } catch (err) {
 
         console.log(
-            `${agentId} results consumer already exists`
+            'Order received consumer already exists'
         );
 
     }
@@ -121,8 +248,8 @@ const createResultConsumer = async (
 
     const consumer =
         await js.consumers.get(
-            streamName,
-            durableName
+            'ORDERS',
+            'central-orders-received'
         );
 
 
@@ -134,97 +261,39 @@ const createResultConsumer = async (
 
         for await (const msg of messages) {
 
-            await processJobResult(
-                msg,
-                agentId
-            );
-
-        }
-
-    })();
-
-};
-
-
-// ==========================================
-// Create Job Status Consumer
-// ==========================================
-
-const createJobStatusConsumer = async () => {
-
-    try {
-
-        await jsm.consumers.add(
-            'JOB_STATUS',
-            {
-                durable_name: 'central-job-status',
-                filter_subject: 'job.status',
-                ack_policy: AckPolicy.Explicit,
-                deliver_policy: DeliverPolicy.New
-            }
-        );
-
-        console.log(
-            'Job status consumer created'
-        );
-
-    } catch (err) {
-
-        console.log(
-            'Job status consumer already exists'
-        );
-
-    }
-
-
-    const statusConsumer =
-        await js.consumers.get(
-            'JOB_STATUS',
-            'central-job-status'
-        );
-
-
-    const statusMessages =
-        await statusConsumer.consume();
-
-
-    (async () => {
-
-        for await (const msg of statusMessages) {
-
             try {
 
-                const statusUpdate =
+                const orderReceived =
                     JSON.parse(
                         sc.decode(msg.data)
                     );
 
 
                 console.log(
-                    'Received Job Status:'
+                    'Order received by Agent:'
                 );
 
                 console.log(
-                    statusUpdate
+                    orderReceived
                 );
 
 
                 const updateResult =
                     await OrdersModel.updateOne(
                         {
-                            id: statusUpdate.jobId,
-                            status: 'PENDING'
+                            id:orderReceived.orderId,
+                            status: database.enums.STATUS.INACTIVE
                         },
                         {
                             $set: {
-                                status: statusUpdate.status
+                                status: database.enums.STATUS.PENDING
                             }
                         }
                     );
 
 
                 console.log(
-                    'Job status update result:',
+                    'Order PENDING update:',
                     updateResult
                 );
 
@@ -234,13 +303,13 @@ const createJobStatusConsumer = async () => {
                 ) {
 
                     console.log(
-                        `Job ${statusUpdate.jobId} was NOT found in MongoDB`
+                        `Order ${orderReceived.orderId} was NOT found or is not INACTIVE`
                     );
 
                 } else {
 
                     console.log(
-                        `Job ${statusUpdate.jobId} status updated to ${statusUpdate.status}`
+                        `Order ${orderReceived.orderId} status changed to PENDING`
                     );
 
                 }
@@ -251,7 +320,7 @@ const createJobStatusConsumer = async () => {
             } catch (err) {
 
                 console.error(
-                    'Failed to process job status:',
+                    'Failed to process order received:',
                     err
                 );
 
@@ -265,58 +334,116 @@ const createJobStatusConsumer = async () => {
 
 };
 
-
-// ==========================================
-// Create HELLO Consumer
-// ==========================================
-
-const createHelloConsumer = async () => {
+const createOrderRunningConsumer = async () => {
 
     try {
 
         await jsm.consumers.add(
-            'HELLO',
+            'ORDERS',
             {
-                durable_name: 'central',
-                filter_subject: 'hello.central',
+                durable_name: 'central-orders-running',
+                filter_subject: 'orders.running',
                 ack_policy: AckPolicy.Explicit,
-                deliver_policy: DeliverPolicy.All
+                deliver_policy: DeliverPolicy.New
             }
         );
 
         console.log(
-            'Hello consumer created'
+            'Order running consumer created'
         );
 
-    } catch {
+    } catch (err) {
 
         console.log(
-            'Hello consumer already exists'
+            'Order running consumer already exists'
         );
 
     }
 
 
-    const helloConsumer =
+    const consumer =
         await js.consumers.get(
-            'HELLO',
-            'central'
+            'ORDERS',
+            'central-orders-running'
         );
 
 
-    const helloMessages =
-        await helloConsumer.consume();
+    const messages =
+        await consumer.consume();
 
 
     (async () => {
 
-        for await (const msg of helloMessages) {
+        for await (const msg of messages) {
 
-            console.log(
-                `Central heard: ${sc.decode(msg.data)}`
-            );
+            try {
 
-            msg.ack();
+                const statusUpdate =
+                    JSON.parse(
+                        sc.decode(msg.data)
+                    );
+
+
+                console.log(
+                    'Received RUNNING status:'
+                );
+
+                console.log(
+                    statusUpdate
+                );
+
+
+                const updateResult =
+                    await OrdersModel.updateOne(
+                        {
+                            id:statusUpdate.orderId,
+
+                            status: database.enums.STATUS.PENDING
+                        },
+                        {
+                            $set: {
+                                status:
+                                    database.enums.STATUS.RUNNING
+                            }
+                        }
+                    );
+
+
+                console.log(
+                    'RUNNING update result:',
+                    updateResult
+                );
+
+
+                if (
+                    updateResult.matchedCount === 0
+                ) {
+
+                    console.log(
+                        `Order ${statusUpdate.orderId} was NOT found or is not PENDING`
+                    );
+
+                } else {
+
+                    console.log(
+                        `Order ${statusUpdate.orderId} status changed to RUNNING`
+                    );
+
+                }
+
+
+                msg.ack();
+
+            } catch (err) {
+
+                console.error(
+                    'Failed to process RUNNING status:',
+                    err
+                );
+
+                msg.ack();
+
+            }
 
         }
 
@@ -324,11 +451,7 @@ const createHelloConsumer = async () => {
 
 };
 
-
-// ==========================================
 // Connect Central to NATS
-// ==========================================
-
 const connectNats = async () => {
 
     try {
@@ -337,59 +460,39 @@ const connectNats = async () => {
             servers: 'nats://localhost:4222'
         });
 
-
         js = nc.jetstream();
-
         jsm = await nc.jetstreamManager();
+        console.log('Central connected to NATS');
 
+        // // JOB STATUS
+        // await createJobStatusConsumer();
 
-        console.log(
-            'Central connected to NATS'
-        );
+        // ORDER RECEIVED
+        await createOrderReceivedConsumer();
 
+        // ORDER RUNNING
+        await createOrderRunningConsumer();
 
-        // ==========================================
-        // JOB STATUS
-        // ==========================================
-
-        await createJobStatusConsumer();
-
-
-        // ==========================================
         // HELLO
-        // ==========================================
-
         await createHelloConsumer();
 
-
-        // ==========================================
         // AGENT 1 RESULTS
-        // ==========================================
-
         await createResultConsumer(
-            'RESULTS',
-            'central-results-agent-1',
-            'results.agent-1',
+            'ORDERS',
+            'central-orders-result-agent-1',
+            'orders.result.agent-1',
             'Agent 1'
         );
 
-
-        // ==========================================
         // AGENT 2 RESULTS
-        // ==========================================
-
         await createResultConsumer(
-            'RESULTS',
-            'central-results-agent-2',
-            'results.agent-2',
+            'ORDERS',
+            'central-orders-result-agent-2',
+            'orders.result.agent-2',
             'Agent 2'
         );
 
-
-        // ==========================================
         // Send Hello to Agent 1
-        // ==========================================
-
         await js.publish(
             'hello.agent-1',
             sc.encode(
@@ -397,15 +500,9 @@ const connectNats = async () => {
             )
         );
 
+        console.log('Hello message sent to Agent 1');
 
-        console.log(
-            'Hello message sent to Agent 1'
-        );
-
-
-        // ==========================================
         // Send Hello to Agent 2
-        // ==========================================
 
         await js.publish(
             'hello.agent-2',
@@ -414,43 +511,27 @@ const connectNats = async () => {
             )
         );
 
-
-        console.log(
-            'Hello message sent to Agent 2'
-        );
-
+        console.log('Hello message sent to Agent 2');
 
     } catch (err) {
-
         console.error(
             'Central NATS connection error:',
             err
         );
-
         throw err;
-
     }
-
 };
 
-
-// ==========================================
 // Publish Message
-// ==========================================
-
 const publish = async (
     subject,
     data
 ) => {
-
     if (!js) {
-
         throw new Error(
             'NATS is not connected'
         );
-
     }
-
 
     await js.publish(
         subject,
@@ -461,10 +542,7 @@ const publish = async (
 
 };
 
-
-// ==========================================
 // Export
-// ==========================================
 
 module.exports = {
     connectNats,

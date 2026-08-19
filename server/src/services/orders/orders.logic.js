@@ -1,10 +1,18 @@
 const OrdersModel = require('./orders.model');
+const JobsModel = require('../jobs/jobs.model');
 const { NotFoundError } = require('../../helpers/APIErros');
 const NatsService = require('../Nats/nats.service');
 
 // Create a new order
 const createOrder = async (context) => {
-    const { order } = context;
+    const { order } = context.body;
+
+    // Find Job
+    const job = await JobsModel.findOne({ id: order.jobId });
+
+    if (!job) {
+        throw new NotFoundError('جاب مورد نظر یافت نشد');
+    }
 
     // Save the order in MongoDB
     await OrdersModel.insertOne(order);
@@ -14,14 +22,15 @@ const createOrder = async (context) => {
 
     await NatsService.publish(subject, {
         orderId: order.id,
+        jobId: order.jobId,
         agentId: order.agentId,
-        fileName: order.fileName,
+        address: job.address,
         timeout: order.timeout
     });
 
     return {
         message: 'سفارش با موفقیت ایجاد شد',
-        data: OrdersModel.getResponseObject()
+        data: OrdersModel.getResponseObject(order)
     };
 };
 

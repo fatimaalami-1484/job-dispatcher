@@ -3,7 +3,7 @@ const uuid = require('uuid');
 const database = require('../../database');
 
 class OrdersModel extends AbstractModel {
-    static COLLECTION_NAME = 'jobs';
+    static COLLECTION_NAME = 'orders';
 
     constructor({
         id = uuid.v4(),

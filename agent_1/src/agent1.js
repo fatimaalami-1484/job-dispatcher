@@ -3,7 +3,8 @@ const express = require('express');
 const { spawn } = require('child_process');
 const path = require('path');
 
-const JOBS_DIRECTORY = 'D:\\Fatemeh\\PART\\JobMesh\\JobTest';
+const JOBS_ROOT = 'D:\\Fatemeh\\PART';
+const database = require('../../server/src/database');
 
 const {
     connect,
@@ -16,9 +17,7 @@ const app = express();
 const PORT = 3001;
 
 
-// ==========================================
 // Execute Job
-// ==========================================
 
 const executeJob = (job) => {
 
@@ -26,20 +25,14 @@ const executeJob = (job) => {
 
         const filePath =
             path.join(
-                JOBS_DIRECTORY,
-                job.fileName
+                JOBS_ROOT,
+                job.address
             );
 
         const startedAt = new Date();
 
-        console.log(
-            `Starting Job ${job.jobId}`
-        );
-
-        console.log(
-            `File: ${filePath}`
-        );
-
+        console.log(`Starting Job ${job.jobId}`);
+        console.log(`File: ${filePath}`);
 
         const child =
             spawn(
@@ -51,89 +44,54 @@ const executeJob = (job) => {
         let stdout = '';
         let stderr = '';
 
-
-        // ==========================================
         // STDOUT
-        // ==========================================
 
         child.stdout.on(
             'data',
             (data) => {
-
-                stdout +=
-                    data.toString();
-
+                stdout += data.toString();
             }
         );
 
 
-        // ==========================================
         // STDERR
-        // ==========================================
 
         child.stderr.on(
             'data',
             (data) => {
-
-                stderr +=
-                    data.toString();
-
+                stderr += data.toString();
             }
         );
 
-
-        // ==========================================
         // TIMEOUT
-        // ==========================================
-
         const timeout =
             setTimeout(
                 () => {
 
-                    console.log(
-                        `Job ${job.jobId} timed out`
-                    );
-
+                    console.log(`Job ${job.jobId} timed out`);
 
                     child.kill();
-
 
                     const finishedAt =
                         new Date();
 
-
                     resolve({
 
-                        jobId:
-                            job.jobId,
-
-                        agentId:
-                            job.agentId,
-
-                        status:
-                            'TIMEOUT',
-
-                        startedAt:
-                            startedAt,
-
-                        finishedAt:
-                            finishedAt,
-
+                        orderId: job.orderId,
+                        jobId: job.jobId,
+                        agentId: job.agentId,
+                        status: database.enums.STATUS.TIMEOUT,
+                        startedAt: startedAt,
+                        finishedAt: finishedAt,
                         duration:
                             finishedAt -
                             startedAt,
 
                         result: {
-
                             success:
                                 false,
-
-                            stdout:
-                                stdout,
-
-                            stderr:
-                                stderr ||
-                                'Job execution timed out'
+                            stdout: stdout,
+                            stderr: stderr || 'Job execution timed out'
 
                         }
 
@@ -144,9 +102,7 @@ const executeJob = (job) => {
             );
 
 
-        // ==========================================
         // PROCESS CLOSE
-        // ==========================================
 
         child.on(
             'close',
@@ -154,49 +110,29 @@ const executeJob = (job) => {
 
                 clearTimeout(timeout);
 
-
                 const finishedAt =
                     new Date();
-
 
                 const success =
                     code === 0;
 
-
                 resolve({
-
-                    jobId:
-                        job.jobId,
-
-                    agentId:
-                        job.agentId,
+                    orderId: job.orderId,
+                    jobId: job.jobId,
+                    agentId: job.agentId,
 
                     status:
                         success
-                            ? 'COMPLETED'
-                            : 'FAILED',
+                            ? database.enums.STATUS.COMPLETED
+                            : database.enums.STATUS.FAILED,
 
-                    startedAt:
-                        startedAt,
-
-                    finishedAt:
-                        finishedAt,
-
-                    duration:
-                        finishedAt -
-                        startedAt,
-
+                    startedAt: startedAt,
+                    finishedAt: finishedAt,
+                    duration: finishedAt - startedAt,
                     result: {
-
-                        success:
-                            success,
-
-                        stdout:
-                            stdout,
-
-                        stderr:
-                            stderr
-
+                        success: success,
+                        stdout: stdout,
+                        stderr: stderr
                     }
 
                 });
@@ -205,9 +141,7 @@ const executeJob = (job) => {
         );
 
 
-        // ==========================================
         // PROCESS ERROR
-        // ==========================================
 
         child.on(
             'error',
@@ -215,31 +149,18 @@ const executeJob = (job) => {
 
                 clearTimeout(timeout);
 
-
                 const finishedAt =
                     new Date();
 
-
                 resolve({
 
-                    jobId:
-                        job.jobId,
-
-                    agentId:
-                        job.agentId,
-
-                    status:
-                        'FAILED',
-
-                    startedAt:
-                        startedAt,
-
-                    finishedAt:
-                        finishedAt,
-
-                    duration:
-                        finishedAt -
-                        startedAt,
+                    orderId:job.orderId,
+                    jobId: job.jobId,
+                    agentId:job.agentId,
+                    status:database.enums.STATUS.FAILED,
+                    startedAt:startedAt,
+                    finishedAt:finishedAt,
+                    duration: finishedAt - startedAt,
 
                     result: {
 
@@ -264,9 +185,7 @@ const executeJob = (job) => {
 };
 
 
-// ==========================================
 // Start Agent 1
-// ==========================================
 
 const startAgent = async () => {
 
@@ -276,61 +195,36 @@ const startAgent = async () => {
                 'nats://localhost:4222'
         });
 
+    const sc = StringCodec();
 
-    const sc =
-        StringCodec();
+    const js = nc.jetstream();
 
+    const jsm = await nc.jetstreamManager();
 
-    const js =
-        nc.jetstream();
-
-
-    const jsm =
-        await nc.jetstreamManager();
+    console.log('Agent 1 connected to NATS');
 
 
-    console.log(
-        'Agent 1 connected to NATS'
-    );
-
-
-    // ==========================================
     // HELLO Consumer
-    // ==========================================
 
     try {
 
         await jsm.consumers.add(
             'HELLO',
             {
-
-                durable_name:
-                    'agent-1',
-
-                filter_subject:
-                    'hello.agent-1',
-
-                ack_policy:
-                    AckPolicy.Explicit,
-
-                deliver_policy:
-                    DeliverPolicy.New
-
+                durable_name: 'agent-1',
+                filter_subject: 'hello.agent-1',
+                ack_policy: AckPolicy.Explicit,
+                deliver_policy: DeliverPolicy.New
             }
         );
 
     } catch (err) {
 
-        console.log(
-            'Hello consumer already exists'
-        );
+        console.log('Hello consumer already exists');
 
     }
 
-
-    // ==========================================
     // Listen for Hello Messages
-    // ==========================================
 
     const helloConsumer =
         await js.consumers.get(
@@ -342,7 +236,6 @@ const startAgent = async () => {
     const helloMessages =
         await helloConsumer.consume();
 
-
     (async () => {
 
         for await (
@@ -350,17 +243,12 @@ const startAgent = async () => {
         ) {
 
             try {
-
                 const text =
                     sc.decode(
                         msg.data
                     );
 
-
-                console.log(
-                    `Received from Central: ${text}`
-                );
-
+                console.log(`Received from Central: ${text}`);
 
                 await js.publish(
                     'hello.central',
@@ -369,16 +257,10 @@ const startAgent = async () => {
                     )
                 );
 
-
-                console.log(
-                    'Agent 1: "Hello Central Service, I am Agent 1."'
-                );
-
-
+                console.log('Agent 1: "Hello Central Service, I am Agent 1."');
                 msg.ack();
 
             } catch (err) {
-
                 console.error(
                     'Hello message failed:',
                     err
@@ -393,28 +275,17 @@ const startAgent = async () => {
     })();
 
 
-    // ==========================================
     // JOB Consumer
-    // ==========================================
 
     try {
 
         await jsm.consumers.add(
-            'JOBS',
+            'ORDERS',
             {
-
-                durable_name:
-                    'agent-1-jobs',
-
-                filter_subject:
-                    'jobs.agent-1',
-
-                ack_policy:
-                    AckPolicy.Explicit,
-
-                deliver_policy:
-                    DeliverPolicy.New
-
+                durable_name: 'agent-1-orders',
+                filter_subject: 'orders.agent-1',
+                ack_policy: AckPolicy.Explicit,
+                deliver_policy: DeliverPolicy.New
             }
         );
 
@@ -427,33 +298,25 @@ const startAgent = async () => {
     }
 
 
-    // ==========================================
-    // Get Job Consumer
-    // ==========================================
+    // Get order Consumer
 
-    const jobConsumer =
+    const orderConsumer =
         await js.consumers.get(
-            'JOBS',
-            'agent-1-jobs'
+            'ORDERS',
+            'agent-1-orders'
         );
 
+    const orderMessages = await orderConsumer.consume();
 
-    const jobMessages =
-        await jobConsumer.consume();
-
-
-    // ==========================================
     // Listen for Jobs
-    // ==========================================
 
     (async () => {
 
         for await (
-            const msg of jobMessages
+            const msg of orderMessages
         ) {
 
             try {
-
                 const job =
                     JSON.parse(
                         sc.decode(
@@ -462,35 +325,34 @@ const startAgent = async () => {
                     );
 
 
-                console.log(
-                    'Received Job:'
-                );
+                console.log('Received Job:');
+                console.log(job);
 
-                console.log(
-                    job
-                );
-
-
-                // ==========================================
-                // SEND RUNNING STATUS
-                // ==========================================
-
-                const runningStatus = {
-
-                    jobId:
-                        job.jobId,
-
-                    agentId:
-                        job.agentId,
-
-                    status:
-                        'RUNNING'
-
-                };
-
+                // SEND ORDER RECEIVED
 
                 await js.publish(
-                    'job.status',
+                    'orders.received',
+                    sc.encode(
+                        JSON.stringify({
+                            orderId: job.orderId,
+                            jobId: job.jobId,
+                            agentId: job.agentId
+                        })
+                    )
+                );
+
+                console.log(`Order ${job.orderId} received`);
+
+                // SEND RUNNING STATUS
+                const runningStatus = {
+                    orderId: job.orderId,
+                    jobId: job.jobId,
+                    agentId: job.agentId,
+                    status: database.enums.STATUS.RUNNING
+                };
+
+                await js.publish(
+                    'orders.running',
                     sc.encode(
                         JSON.stringify(
                             runningStatus
@@ -498,37 +360,18 @@ const startAgent = async () => {
                     )
                 );
 
+                console.log(`Job ${job.jobId} status sent: RUNNING`);
 
-                console.log(
-                    `Job ${job.jobId} status sent: RUNNING`
-                );
-
-
-                // ==========================================
                 // EXECUTE JOB
-                // ==========================================
 
-                const result =
-                    await executeJob(
-                        job
-                    );
+                const result = await executeJob(job);
 
+                console.log('Job Result:');
+                console.log(result);
 
-                console.log(
-                    'Job Result:'
-                );
-
-                console.log(
-                    result
-                );
-
-
-                // ==========================================
                 // SEND FINAL RESULT
-                // ==========================================
-
                 await js.publish(
-                    'results.agent-1',
+                    'orders.result.agent-1',
                     sc.encode(
                         JSON.stringify(
                             result
@@ -536,25 +379,16 @@ const startAgent = async () => {
                     )
                 );
 
+                console.log('Job result sent to Central');
 
-                console.log(
-                    'Job result sent to Central'
-                );
-
-
-                // ==========================================
                 // ACK JOB MESSAGE
-                // ==========================================
-
                 msg.ack();
 
             } catch (err) {
-
                 console.error(
                     'Job execution failed:',
                     err
                 );
-
 
                 msg.ack();
 
@@ -564,10 +398,7 @@ const startAgent = async () => {
 
     })();
 
-
-    // ==========================================
     // HTTP SERVER
-    // ==========================================
 
     app.get(
         '/',
@@ -584,30 +415,21 @@ const startAgent = async () => {
     app.listen(
         PORT,
         () => {
-
-            console.log(
-                `Agent 1 is running on port ${PORT}`
-            );
-
+            console.log(`Agent 1 is running on port ${PORT}`);
         }
     );
 
 };
 
 
-// ==========================================
 // START
-// ==========================================
 
 startAgent().catch(
     (err) => {
-
         console.error(
             'Agent 1 failed to start:',
             err
         );
-
         process.exit(1);
-
     }
 );

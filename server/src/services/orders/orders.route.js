@@ -1,7 +1,8 @@
 const router = require('express').Router();
 const OrdersController = require('./orders.controller');
 const SchemaValidatorMiddleware = require('../../middlewares/SchemaValidatorMiddleware');
-const { createOrderSchema } = require('./orders.schema')
+const { createOrderSchema } = require('./orders.schema');
+
 router.post(
     '/orders',
     SchemaValidatorMiddleware(createOrderSchema),

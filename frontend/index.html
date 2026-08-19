@@ -30,6 +30,7 @@
         <section class="grid">
 
             <!-- Create Job -->
+            <!-- Create Job -->
             <div class="card">
 
                 <h2>Create Job</h2>
@@ -47,27 +48,18 @@
 
 
                     <div class="form-group">
-                        <label for="fileName">File Name</label>
+                        <label for="fileId">Select File</label>
 
-                        <input
-                            type="text"
-                            id="fileName"
-                            placeholder="test.js"
-                            required
-                        >
+                        <select id="fileId" required>
+                            <option value="">Loading files...</option>
+                        </select>
                     </div>
 
 
                     <div class="form-group">
                         <label for="timeout">Timeout (seconds)</label>
 
-                        <input
-                            type="number"
-                            id="timeout"
-                            value="30"
-                            min="1"
-                            required
-                        >
+                        <input type="number" id="timeout" value="30" min="1" required>
                     </div>
 
 
@@ -83,29 +75,58 @@
 
 
             <!-- Job Status -->
-            <div class="card">
+            <!-- <div class="card">
 
                 <h2>Job Status</h2>
 
+                <div class="form-group">
+
+                    <label for="fileId">Select File</label>
+
+                    <select id="fileId" required>
+                        <option value="">Loading files...</option>
+                    </select>
+
+                </div> 
                 <div class="search-box">
 
-                    <input
-                        type="number"
-                        id="jobId"
-                        placeholder="Enter Job ID"
-                    >
+                    <input type="number" id="jobId" placeholder="Enter Job ID">
 
                     <button id="getJobButton">
                         Get Job
                     </button>
 
-                </div>
+                </div> 
 
 
                 <div id="jobResult" class="job-result">
 
                     <div class="empty-state">
                         Enter a Job ID to view its status.
+                    </div>
+
+                </div>
+
+            </div> -->
+
+            <div class="card">
+
+                <h2>Job Status</h2>
+
+                <div class="form-group">
+
+                    <label for="statusFileId">Select File</label>
+
+                    <select id="statusFileId" required>
+                        <option value="">Loading files...</option>
+                    </select>
+
+                </div>
+
+                <div id="jobResult" class="job-result">
+
+                    <div class="empty-state">
+                        Select a file to view its status.
                     </div>
 
                 </div>

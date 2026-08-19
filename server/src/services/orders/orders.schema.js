@@ -6,7 +6,7 @@ const createOrderSchema = () =>
             .required('انتخاب جاب الزامی است'),
         agentId: Yup.string()
             .required('انتخاب ایجنت الزامی است'),
-        timeOut: Yup.number()
+        timeout: Yup.number()
             .required('انتخاب زمان الزامی است'),
     });
 
