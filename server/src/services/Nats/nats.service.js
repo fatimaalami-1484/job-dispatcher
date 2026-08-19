@@ -5,7 +5,7 @@ const {
     DeliverPolicy
 } = require('nats');
 
-const JobsModel = require('../Jobs/jobs.model');
+const OrdersModel = require('../orders/jobs.model');
 
 let nc;
 let js;
@@ -34,7 +34,7 @@ const processJobResult = async (msg, agentId) => {
 
 
         const updateResult =
-            await JobsModel.updateOne(
+            await OrdersModel.updateOne(
                 { id: result.jobId },
                 {
                     status: result.status,
@@ -210,7 +210,7 @@ const createJobStatusConsumer = async () => {
 
 
                 const updateResult =
-                    await JobsModel.updateOne(
+                    await OrdersModel.updateOne(
                         {
                             id: statusUpdate.jobId,
                             status: 'PENDING'

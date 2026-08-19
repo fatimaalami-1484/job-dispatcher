@@ -32,3 +32,303 @@
   level: 'error',
   timestamp: '2026-08-19T07:05:28.071Z'
 }
+{
+  method: 'GET',
+  originalUrl: '/jobs/24',
+  status: 404,
+  message: 'جاب یافت نشد',
+  stack: 'Error: جاب یافت نشد\n' +
+    '    at Object.getJobById (D:\\Fatemeh\\PART\\JobMesh\\server\\src\\services\\Jobs\\jobs.logic.js:59:15)\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async getJobById (D:\\Fatemeh\\PART\\JobMesh\\server\\src\\services\\Jobs\\jobs.controller.js:20:35)',
+  level: 'error',
+  timestamp: '2026-08-19T09:01:55.465Z'
+}
+{
+  error: Error [ERR_REQUIRE_ASYNC_MODULE]: require() cannot be used on an ESM graph with top-level await. Use import() instead. To see where the top-level await comes from, use --experimental-print-required-tla.
+      at ModuleJobSync.runSync (node:internal/modules/esm/module_job:392:13)
+      at ModuleLoader.importSyncForRequire (node:internal/modules/esm/loader:360:47)
+      at loadESMFromCJS (node:internal/modules/cjs/loader:1385:24)
+      at Module._compile (node:internal/modules/cjs/loader:1536:5)
+      at Object..js (node:internal/modules/cjs/loader:1706:10)
+      at Module.load (node:internal/modules/cjs/loader:1289:32)
+      at Function._load (node:internal/modules/cjs/loader:1108:12)
+      at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+      at wrapModuleLoad (node:internal/modules/cjs/loader:220:24)
+      at Module.require (node:internal/modules/cjs/loader:1311:12) {
+    code: 'ERR_REQUIRE_ASYNC_MODULE'
+  },
+  level: 'error',
+  message: 'uncaughtException: require() cannot be used on an ESM graph with top-level await. Use import() instead. To see where the top-level await comes from, use --experimental-print-required-tla.\n' +
+    'Error [ERR_REQUIRE_ASYNC_MODULE]: require() cannot be used on an ESM graph with top-level await. Use import() instead. To see where the top-level await comes from, use --experimental-print-required-tla.\n' +
+    '    at ModuleJobSync.runSync (node:internal/modules/esm/module_job:392:13)\n' +
+    '    at ModuleLoader.importSyncForRequire (node:internal/modules/esm/loader:360:47)\n' +
+    '    at loadESMFromCJS (node:internal/modules/cjs/loader:1385:24)\n' +
+    '    at Module._compile (node:internal/modules/cjs/loader:1536:5)\n' +
+    '    at Object..js (node:internal/modules/cjs/loader:1706:10)\n' +
+    '    at Module.load (node:internal/modules/cjs/loader:1289:32)\n' +
+    '    at Function._load (node:internal/modules/cjs/loader:1108:12)\n' +
+    '    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:220:24)\n' +
+    '    at Module.require (node:internal/modules/cjs/loader:1311:12)',
+  stack: 'Error [ERR_REQUIRE_ASYNC_MODULE]: require() cannot be used on an ESM graph with top-level await. Use import() instead. To see where the top-level await comes from, use --experimental-print-required-tla.\n' +
+    '    at ModuleJobSync.runSync (node:internal/modules/esm/module_job:392:13)\n' +
+    '    at ModuleLoader.importSyncForRequire (node:internal/modules/esm/loader:360:47)\n' +
+    '    at loadESMFromCJS (node:internal/modules/cjs/loader:1385:24)\n' +
+    '    at Module._compile (node:internal/modules/cjs/loader:1536:5)\n' +
+    '    at Object..js (node:internal/modules/cjs/loader:1706:10)\n' +
+    '    at Module.load (node:internal/modules/cjs/loader:1289:32)\n' +
+    '    at Function._load (node:internal/modules/cjs/loader:1108:12)\n' +
+    '    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:220:24)\n' +
+    '    at Module.require (node:internal/modules/cjs/loader:1311:12)',
+  exception: true,
+  date: 'Wed Aug 19 2026 12:40:54 GMT+0330 (Iran Standard Time)',
+  process: {
+    pid: 30332,
+    uid: null,
+    gid: null,
+    cwd: 'D:\\Fatemeh\\PART\\JobMesh\\server\\src',
+    execPath: 'C:\\Program Files\\nodejs\\node.exe',
+    version: 'v22.14.0',
+    argv: [
+      'C:\\Program Files\\nodejs\\node.exe',
+      'D:\\Fatemeh\\PART\\JobMesh\\server\\src\\server.js'
+    ],
+    memoryUsage: {
+      rss: 63078400,
+      heapTotal: 32698368,
+      heapUsed: 16741520,
+      external: 20957282,
+      arrayBuffers: 18262566
+    }
+  },
+  os: { loadavg: [ 0, 0, 0 ], uptime: 1445049.906 },
+  trace: [
+    {
+      column: 13,
+      file: 'node:internal/modules/esm/module_job',
+      function: 'ModuleJobSync.runSync',
+      line: 392,
+      method: 'runSync',
+      native: false
+    },
+    {
+      column: 47,
+      file: 'node:internal/modules/esm/loader',
+      function: 'ModuleLoader.importSyncForRequire',
+      line: 360,
+      method: 'importSyncForRequire',
+      native: false
+    },
+    {
+      column: 24,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'loadESMFromCJS',
+      line: 1385,
+      method: null,
+      native: false
+    },
+    {
+      column: 5,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module._compile',
+      line: 1536,
+      method: '_compile',
+      native: false
+    },
+    {
+      column: 10,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Object..js',
+      line: 1706,
+      method: '.js',
+      native: false
+    },
+    {
+      column: 32,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module.load',
+      line: 1289,
+      method: 'load',
+      native: false
+    },
+    {
+      column: 12,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Function._load',
+      line: 1108,
+      method: '_load',
+      native: false
+    },
+    {
+      column: 14,
+      file: 'node:diagnostics_channel',
+      function: 'TracingChannel.traceSync',
+      line: 322,
+      method: 'traceSync',
+      native: false
+    },
+    {
+      column: 24,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'wrapModuleLoad',
+      line: 220,
+      method: null,
+      native: false
+    },
+    {
+      column: 12,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module.require',
+      line: 1311,
+      method: 'require',
+      native: false
+    }
+  ],
+  timestamp: '2026-08-19T09:10:54.142Z'
+}
+{
+  error: Error [ERR_REQUIRE_ASYNC_MODULE]: require() cannot be used on an ESM graph with top-level await. Use import() instead. To see where the top-level await comes from, use --experimental-print-required-tla.
+      at ModuleJobSync.runSync (node:internal/modules/esm/module_job:392:13)
+      at ModuleLoader.importSyncForRequire (node:internal/modules/esm/loader:360:47)
+      at loadESMFromCJS (node:internal/modules/cjs/loader:1385:24)
+      at Module._compile (node:internal/modules/cjs/loader:1536:5)
+      at Object..js (node:internal/modules/cjs/loader:1706:10)
+      at Module.load (node:internal/modules/cjs/loader:1289:32)
+      at Function._load (node:internal/modules/cjs/loader:1108:12)
+      at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+      at wrapModuleLoad (node:internal/modules/cjs/loader:220:24)
+      at Module.require (node:internal/modules/cjs/loader:1311:12) {
+    code: 'ERR_REQUIRE_ASYNC_MODULE'
+  },
+  level: 'error',
+  message: 'uncaughtException: require() cannot be used on an ESM graph with top-level await. Use import() instead. To see where the top-level await comes from, use --experimental-print-required-tla.\n' +
+    'Error [ERR_REQUIRE_ASYNC_MODULE]: require() cannot be used on an ESM graph with top-level await. Use import() instead. To see where the top-level await comes from, use --experimental-print-required-tla.\n' +
+    '    at ModuleJobSync.runSync (node:internal/modules/esm/module_job:392:13)\n' +
+    '    at ModuleLoader.importSyncForRequire (node:internal/modules/esm/loader:360:47)\n' +
+    '    at loadESMFromCJS (node:internal/modules/cjs/loader:1385:24)\n' +
+    '    at Module._compile (node:internal/modules/cjs/loader:1536:5)\n' +
+    '    at Object..js (node:internal/modules/cjs/loader:1706:10)\n' +
+    '    at Module.load (node:internal/modules/cjs/loader:1289:32)\n' +
+    '    at Function._load (node:internal/modules/cjs/loader:1108:12)\n' +
+    '    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:220:24)\n' +
+    '    at Module.require (node:internal/modules/cjs/loader:1311:12)',
+  stack: 'Error [ERR_REQUIRE_ASYNC_MODULE]: require() cannot be used on an ESM graph with top-level await. Use import() instead. To see where the top-level await comes from, use --experimental-print-required-tla.\n' +
+    '    at ModuleJobSync.runSync (node:internal/modules/esm/module_job:392:13)\n' +
+    '    at ModuleLoader.importSyncForRequire (node:internal/modules/esm/loader:360:47)\n' +
+    '    at loadESMFromCJS (node:internal/modules/cjs/loader:1385:24)\n' +
+    '    at Module._compile (node:internal/modules/cjs/loader:1536:5)\n' +
+    '    at Object..js (node:internal/modules/cjs/loader:1706:10)\n' +
+    '    at Module.load (node:internal/modules/cjs/loader:1289:32)\n' +
+    '    at Function._load (node:internal/modules/cjs/loader:1108:12)\n' +
+    '    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:220:24)\n' +
+    '    at Module.require (node:internal/modules/cjs/loader:1311:12)',
+  exception: true,
+  date: 'Wed Aug 19 2026 12:41:14 GMT+0330 (Iran Standard Time)',
+  process: {
+    pid: 9580,
+    uid: null,
+    gid: null,
+    cwd: 'D:\\Fatemeh\\PART\\JobMesh\\server\\src',
+    execPath: 'C:\\Program Files\\nodejs\\node.exe',
+    version: 'v22.14.0',
+    argv: [
+      'C:\\Program Files\\nodejs\\node.exe',
+      'D:\\Fatemeh\\PART\\JobMesh\\server\\src\\server.js'
+    ],
+    memoryUsage: {
+      rss: 63549440,
+      heapTotal: 32960512,
+      heapUsed: 16609584,
+      external: 20957282,
+      arrayBuffers: 18262566
+    }
+  },
+  os: { loadavg: [ 0, 0, 0 ], uptime: 1445069.968 },
+  trace: [
+    {
+      column: 13,
+      file: 'node:internal/modules/esm/module_job',
+      function: 'ModuleJobSync.runSync',
+      line: 392,
+      method: 'runSync',
+      native: false
+    },
+    {
+      column: 47,
+      file: 'node:internal/modules/esm/loader',
+      function: 'ModuleLoader.importSyncForRequire',
+      line: 360,
+      method: 'importSyncForRequire',
+      native: false
+    },
+    {
+      column: 24,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'loadESMFromCJS',
+      line: 1385,
+      method: null,
+      native: false
+    },
+    {
+      column: 5,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module._compile',
+      line: 1536,
+      method: '_compile',
+      native: false
+    },
+    {
+      column: 10,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Object..js',
+      line: 1706,
+      method: '.js',
+      native: false
+    },
+    {
+      column: 32,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module.load',
+      line: 1289,
+      method: 'load',
+      native: false
+    },
+    {
+      column: 12,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Function._load',
+      line: 1108,
+      method: '_load',
+      native: false
+    },
+    {
+      column: 14,
+      file: 'node:diagnostics_channel',
+      function: 'TracingChannel.traceSync',
+      line: 322,
+      method: 'traceSync',
+      native: false
+    },
+    {
+      column: 24,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'wrapModuleLoad',
+      line: 220,
+      method: null,
+      native: false
+    },
+    {
+      column: 12,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module.require',
+      line: 1311,
+      method: 'require',
+      native: false
+    }
+  ],
+  timestamp: '2026-08-19T09:11:14.199Z'
+}

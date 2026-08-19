@@ -1,17 +1,36 @@
 const AbstractModel = require('../../helpers/AbstractModel');
+const uuid = require('uuid');
+const database = require('../../database');
 
-class JobsModel extends AbstractModel {
+class OrdersModel extends AbstractModel {
     static COLLECTION_NAME = 'jobs';
+
+    constructor({
+        id = uuid.v4(),
+        jobId,
+        status = database.enums.STATUS.INACTIVE,
+        agentId,
+        timeout,
+
+    }) {
+        super();
+        this.id = id;
+        this.jobId = jobId;
+        this.status = status;
+        this.agentId = agentId;
+        this.timeout = timeout;
+
+    }
 
     static getResponseObject(doc, exclude = []) {
         const response = {
             id: doc.id,
+            jobId: doc.jobId,
             createdAt: doc.createdAt,
             startedAt: doc.startedAt,
             finishedAt: doc.finishedAt,
             duration: doc.duration,
             agentId: doc.agentId,
-            fileName: doc.fileName,
             timeout: doc.timeout,
             status: doc.status,
             result: doc.result
@@ -26,12 +45,12 @@ class JobsModel extends AbstractModel {
         const projection = {
             _id: 0,
             id: 1,
+            jobId: 1,
             createdAt: 1,
             startedAt: 1,
             finishedAt: 1,
             duration: 1,
             agentId: 1,
-            fileName: 1,
             timeout: 1,
             status: 1,
             result: 1
@@ -47,11 +66,6 @@ class JobsModel extends AbstractModel {
 
         return projection;
     }
-
-    static getSortField({ sortId, orderBy }) {
-        orderBy = [1, -1].includes(orderBy) ? orderBy : -1;
-        return { createdAt: orderBy };
-    }
 }
 
-module.exports = JobsModel;
+module.exports = OrdersModel;
