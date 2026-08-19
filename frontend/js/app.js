@@ -162,11 +162,17 @@ function renderJob(job) {
     if (job.status === 'PENDING') {
         statusClass = 'status-pending';
 
-    } else if (job.status === 'COMPLETED') {
+    } else if (job.status === 'RUNNING') {
+        statusClass = 'status-runnig';
+
+    }else if (job.status === 'COMPLETED') {
         statusClass = 'status-completed';
 
     } else if (job.status === 'FAILED') {
         statusClass = 'status-failed';
+
+    } else if (job.status === 'TIMEOUT') {
+        statusClass = 'status-timeout';
     }
 
     const stdout = job.result?.stdout || '';
@@ -237,11 +243,10 @@ function renderJob(job) {
                 </span>
 
                 <span>
-                    ${
-                        job.duration !== null
-                            ? `${job.duration} ms`
-                            : '-'
-                    }
+                    ${job.duration !== null
+            ? `${job.duration} ms`
+            : '-'
+        }
                 </span>
             </div>
 
@@ -292,9 +297,8 @@ ${escapeHtml(stdout || 'No output')}
             </pre>
 
 
-            ${
-                stderr
-                    ? `
+            ${stderr
+            ? `
                         <div class="error-output">
 
                             <h3>
@@ -307,8 +311,8 @@ ${escapeHtml(stderr)}
 
                         </div>
                     `
-                    : ''
-            }
+            : ''
+        }
 
         </div>
     `;
