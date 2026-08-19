@@ -104,8 +104,18 @@ JetStream امکاناتی را فراهم می‌کند که برای سیست�
 
 در نسخه فعلی پروژه امکانات زیر پیاده‌سازی شده‌اند:
 
-- ایجاد Job
+- ایجاد Job از طریق API و Frontend
 - دریافت اطلاعات Job بر اساس شناسه
-- ذخیره اطلاعات در MongoDB
+- ذخیره اطلاعات Job در MongoDB
 - استفاده از شناسه ترتیبی برای Jobها
-- طراحی معماری مبتنی بر NATS JetStream برای ارتباط بین Central و Agentها
+- ارسال Job از Central به Agent از طریق NATS JetStream
+- دریافت و پردازش Job توسط Agent
+- اجرای فایل JavaScript روی Agent
+- ثبت وضعیت اجرای Job
+- ثبت زمان شروع و پایان اجرای Job
+- محاسبه مدت زمان اجرای Job
+- ارسال نتیجه اجرای Job از Agent به Central از طریق NATS JetStream
+- به‌روزرسانی اطلاعات و نتیجه Job در MongoDB
+- نمایش وضعیت، اطلاعات و نتیجه اجرای Job در Frontend
+- نمایش خروجی استاندارد (stdout) و خطاهای اجرای Job (stderr) در Frontend
+- پیاده‌سازی ارتباط بین Central و چند Agent
