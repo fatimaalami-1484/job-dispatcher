@@ -3,3 +3,7 @@ const successResponseGenerator = (message, data) => ({
         message, data
     }
 });
+
+module.exports = {
+    successResponseGenerator
+};

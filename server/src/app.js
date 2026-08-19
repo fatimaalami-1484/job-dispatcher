@@ -2,15 +2,20 @@ const path = require('path');
 
 const rootDir = __dirname.replace('\\server\\src', '');
 require('dotenv').config({
-    path:     path.join(rootDir, '.env'),
+    path: path.join(rootDir, '.env'),
     override: true
 });
 
 const cors = require('cors');
-const { corsOptions } = require('./config');
 const morgan = require('morgan');
 const express = require('express');
 const Logger = require('./helpers/Logger');
+const ErrorHandlerMiddleware = require('./middlewares/ErrorHandlerMiddleware');
+const { NotFoundError } = require('./helpers/APIErros');
+const { corsOptions } = require('./config');
+const Tools = require('./helpers/Tools');
+
+const JobsRoute = require('./services/Jobs/jobs.route');
 
 
 
@@ -22,7 +27,7 @@ const app = express();
 
 // Stream morgan logs to winston logger
 Logger.stream = {
-    write (message) {
+    write(message) {
         Logger.debug(message);
     }
 };
@@ -38,7 +43,7 @@ app.use(
 // Parse JSON and URL-encoded request bodies and cookies
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({
-    limit:    '50mb',
+    limit: '50mb',
     extended: true
 }));
 
@@ -50,9 +55,11 @@ app.get('/health', (req, res) => {
     res.status(200).send(Tools.successResponseGenerator('سرویس در حال اجرا می‌باشد'));
 });
 
+// Jobs routes
+app.use(JobsRoute);
 
 // Handle 404 errors
-app.use('/api/*', (req, res, next) => next(new NotFoundError('مسیر یافت نشد')));
+app.use((req, res, next) => next(new NotFoundError('مسیر یافت نشد')));
 
 // Handle errors
 app.use(ErrorHandlerMiddleware);

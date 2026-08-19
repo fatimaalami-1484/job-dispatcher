@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 3
+    },
+    "auditLog": "D:\\Fatemeh\\PART\\JobMesh\\logs\\.66b62a011058cc0d2ea6b8d76e36f94de7a0888c-audit.json",
+    "files": [
+        {
+            "date": 1787113416350,
+            "name": "D:\\Fatemeh\\PART\\JobMesh\\logs\\Combined-2026-08-19.log",
+            "hash": "7f326e2bb1b89069c97028adb855ae581d3a5247a567484cc5bfb3effcde04f1"
+        }
+    ],
+    "hashType": "sha256"
+}
