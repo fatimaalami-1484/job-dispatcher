@@ -241,3 +241,370 @@
   level: 'error',
   timestamp: '2026-08-19T04:56:24.240Z'
 }
+{
+  error: Error: Cannot find module './services/Nats/nats.service'
+  Require stack:
+  - D:\Fatemeh\PART\JobMesh\server\src\server.js
+      at Function._resolveFilename (node:internal/modules/cjs/loader:1225:15)
+      at Function._load (node:internal/modules/cjs/loader:1055:27)
+      at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+      at wrapModuleLoad (node:internal/modules/cjs/loader:220:24)
+      at Module.require (node:internal/modules/cjs/loader:1311:12)
+      at require (node:internal/modules/helpers:136:16)
+      at Object.<anonymous> (D:\Fatemeh\PART\JobMesh\server\src\server.js:5:21)
+      at Module._compile (node:internal/modules/cjs/loader:1554:14)
+      at Object..js (node:internal/modules/cjs/loader:1706:10)
+      at Module.load (node:internal/modules/cjs/loader:1289:32) {
+    code: 'MODULE_NOT_FOUND',
+    requireStack: [ 'D:\\Fatemeh\\PART\\JobMesh\\server\\src\\server.js' ]
+  },
+  level: 'error',
+  message: "uncaughtException: Cannot find module './services/Nats/nats.service'\n" +
+    'Require stack:\n' +
+    '- D:\\Fatemeh\\PART\\JobMesh\\server\\src\\server.js\n' +
+    "Error: Cannot find module './services/Nats/nats.service'\n" +
+    'Require stack:\n' +
+    '- D:\\Fatemeh\\PART\\JobMesh\\server\\src\\server.js\n' +
+    '    at Function._resolveFilename (node:internal/modules/cjs/loader:1225:15)\n' +
+    '    at Function._load (node:internal/modules/cjs/loader:1055:27)\n' +
+    '    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:220:24)\n' +
+    '    at Module.require (node:internal/modules/cjs/loader:1311:12)\n' +
+    '    at require (node:internal/modules/helpers:136:16)\n' +
+    '    at Object.<anonymous> (D:\\Fatemeh\\PART\\JobMesh\\server\\src\\server.js:5:21)\n' +
+    '    at Module._compile (node:internal/modules/cjs/loader:1554:14)\n' +
+    '    at Object..js (node:internal/modules/cjs/loader:1706:10)\n' +
+    '    at Module.load (node:internal/modules/cjs/loader:1289:32)',
+  stack: "Error: Cannot find module './services/Nats/nats.service'\n" +
+    'Require stack:\n' +
+    '- D:\\Fatemeh\\PART\\JobMesh\\server\\src\\server.js\n' +
+    '    at Function._resolveFilename (node:internal/modules/cjs/loader:1225:15)\n' +
+    '    at Function._load (node:internal/modules/cjs/loader:1055:27)\n' +
+    '    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:220:24)\n' +
+    '    at Module.require (node:internal/modules/cjs/loader:1311:12)\n' +
+    '    at require (node:internal/modules/helpers:136:16)\n' +
+    '    at Object.<anonymous> (D:\\Fatemeh\\PART\\JobMesh\\server\\src\\server.js:5:21)\n' +
+    '    at Module._compile (node:internal/modules/cjs/loader:1554:14)\n' +
+    '    at Object..js (node:internal/modules/cjs/loader:1706:10)\n' +
+    '    at Module.load (node:internal/modules/cjs/loader:1289:32)',
+  exception: true,
+  date: 'Wed Aug 19 2026 08:58:12 GMT+0330 (Iran Standard Time)',
+  process: {
+    pid: 30560,
+    uid: null,
+    gid: null,
+    cwd: 'D:\\Fatemeh\\PART\\JobMesh',
+    execPath: 'C:\\Program Files\\nodejs\\node.exe',
+    version: 'v22.14.0',
+    argv: [
+      'C:\\Program Files\\nodejs\\node.exe',
+      'D:\\Fatemeh\\PART\\JobMesh\\server\\src\\server.js'
+    ],
+    memoryUsage: {
+      rss: 57053184,
+      heapTotal: 18812928,
+      heapUsed: 16250224,
+      external: 20452421,
+      arrayBuffers: 18262566
+    }
+  },
+  os: { loadavg: [ 0, 0, 0 ], uptime: 1431688.718 },
+  trace: [
+    {
+      column: 15,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Function._resolveFilename',
+      line: 1225,
+      method: '_resolveFilename',
+      native: false
+    },
+    {
+      column: 27,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Function._load',
+      line: 1055,
+      method: '_load',
+      native: false
+    },
+    {
+      column: 14,
+      file: 'node:diagnostics_channel',
+      function: 'TracingChannel.traceSync',
+      line: 322,
+      method: 'traceSync',
+      native: false
+    },
+    {
+      column: 24,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'wrapModuleLoad',
+      line: 220,
+      method: null,
+      native: false
+    },
+    {
+      column: 12,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module.require',
+      line: 1311,
+      method: 'require',
+      native: false
+    },
+    {
+      column: 16,
+      file: 'node:internal/modules/helpers',
+      function: 'require',
+      line: 136,
+      method: null,
+      native: false
+    },
+    {
+      column: 21,
+      file: 'D:\\Fatemeh\\PART\\JobMesh\\server\\src\\server.js',
+      function: null,
+      line: 5,
+      method: null,
+      native: false
+    },
+    {
+      column: 14,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module._compile',
+      line: 1554,
+      method: '_compile',
+      native: false
+    },
+    {
+      column: 10,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Object..js',
+      line: 1706,
+      method: '.js',
+      native: false
+    },
+    {
+      column: 32,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module.load',
+      line: 1289,
+      method: 'load',
+      native: false
+    }
+  ],
+  timestamp: '2026-08-19T05:28:12.949Z'
+}
+{
+  message: "Cannot find module './services/Nats/nats.service'\n" +
+    'Require stack:\n' +
+    '- D:\\Fatemeh\\PART\\JobMesh\\server\\src\\server.js',
+  level: 'error',
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [ 'D:\\Fatemeh\\PART\\JobMesh\\server\\src\\server.js' ],
+  stack: "Error: Cannot find module './services/Nats/nats.service'\n" +
+    'Require stack:\n' +
+    '- D:\\Fatemeh\\PART\\JobMesh\\server\\src\\server.js\n' +
+    '    at Function._resolveFilename (node:internal/modules/cjs/loader:1225:15)\n' +
+    '    at Function._load (node:internal/modules/cjs/loader:1055:27)\n' +
+    '    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:220:24)\n' +
+    '    at Module.require (node:internal/modules/cjs/loader:1311:12)\n' +
+    '    at require (node:internal/modules/helpers:136:16)\n' +
+    '    at Object.<anonymous> (D:\\Fatemeh\\PART\\JobMesh\\server\\src\\server.js:5:21)\n' +
+    '    at Module._compile (node:internal/modules/cjs/loader:1554:14)\n' +
+    '    at Object..js (node:internal/modules/cjs/loader:1706:10)\n' +
+    '    at Module.load (node:internal/modules/cjs/loader:1289:32)',
+  timestamp: '2026-08-19T05:28:12.951Z'
+}
+{
+  error: Error: Cannot find module 'nats'
+  Require stack:
+  - D:\Fatemeh\PART\JobMesh\server\src\services\Nats\nats.service.js
+  - D:\Fatemeh\PART\JobMesh\server\src\server.js
+      at Function._resolveFilename (node:internal/modules/cjs/loader:1225:15)
+      at Function._load (node:internal/modules/cjs/loader:1055:27)
+      at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+      at wrapModuleLoad (node:internal/modules/cjs/loader:220:24)
+      at Module.require (node:internal/modules/cjs/loader:1311:12)
+      at require (node:internal/modules/helpers:136:16)
+      at Object.<anonymous> (D:\Fatemeh\PART\JobMesh\server\src\services\Nats\nats.service.js:6:5)
+      at Module._compile (node:internal/modules/cjs/loader:1554:14)
+      at Object..js (node:internal/modules/cjs/loader:1706:10)
+      at Module.load (node:internal/modules/cjs/loader:1289:32) {
+    code: 'MODULE_NOT_FOUND',
+    requireStack: [
+      'D:\\Fatemeh\\PART\\JobMesh\\server\\src\\services\\Nats\\nats.service.js',
+      'D:\\Fatemeh\\PART\\JobMesh\\server\\src\\server.js'
+    ]
+  },
+  level: 'error',
+  message: "uncaughtException: Cannot find module 'nats'\n" +
+    'Require stack:\n' +
+    '- D:\\Fatemeh\\PART\\JobMesh\\server\\src\\services\\Nats\\nats.service.js\n' +
+    '- D:\\Fatemeh\\PART\\JobMesh\\server\\src\\server.js\n' +
+    "Error: Cannot find module 'nats'\n" +
+    'Require stack:\n' +
+    '- D:\\Fatemeh\\PART\\JobMesh\\server\\src\\services\\Nats\\nats.service.js\n' +
+    '- D:\\Fatemeh\\PART\\JobMesh\\server\\src\\server.js\n' +
+    '    at Function._resolveFilename (node:internal/modules/cjs/loader:1225:15)\n' +
+    '    at Function._load (node:internal/modules/cjs/loader:1055:27)\n' +
+    '    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:220:24)\n' +
+    '    at Module.require (node:internal/modules/cjs/loader:1311:12)\n' +
+    '    at require (node:internal/modules/helpers:136:16)\n' +
+    '    at Object.<anonymous> (D:\\Fatemeh\\PART\\JobMesh\\server\\src\\services\\Nats\\nats.service.js:6:5)\n' +
+    '    at Module._compile (node:internal/modules/cjs/loader:1554:14)\n' +
+    '    at Object..js (node:internal/modules/cjs/loader:1706:10)\n' +
+    '    at Module.load (node:internal/modules/cjs/loader:1289:32)',
+  stack: "Error: Cannot find module 'nats'\n" +
+    'Require stack:\n' +
+    '- D:\\Fatemeh\\PART\\JobMesh\\server\\src\\services\\Nats\\nats.service.js\n' +
+    '- D:\\Fatemeh\\PART\\JobMesh\\server\\src\\server.js\n' +
+    '    at Function._resolveFilename (node:internal/modules/cjs/loader:1225:15)\n' +
+    '    at Function._load (node:internal/modules/cjs/loader:1055:27)\n' +
+    '    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:220:24)\n' +
+    '    at Module.require (node:internal/modules/cjs/loader:1311:12)\n' +
+    '    at require (node:internal/modules/helpers:136:16)\n' +
+    '    at Object.<anonymous> (D:\\Fatemeh\\PART\\JobMesh\\server\\src\\services\\Nats\\nats.service.js:6:5)\n' +
+    '    at Module._compile (node:internal/modules/cjs/loader:1554:14)\n' +
+    '    at Object..js (node:internal/modules/cjs/loader:1706:10)\n' +
+    '    at Module.load (node:internal/modules/cjs/loader:1289:32)',
+  exception: true,
+  date: 'Wed Aug 19 2026 08:59:29 GMT+0330 (Iran Standard Time)',
+  process: {
+    pid: 22660,
+    uid: null,
+    gid: null,
+    cwd: 'D:\\Fatemeh\\PART\\JobMesh',
+    execPath: 'C:\\Program Files\\nodejs\\node.exe',
+    version: 'v22.14.0',
+    argv: [
+      'C:\\Program Files\\nodejs\\node.exe',
+      'D:\\Fatemeh\\PART\\JobMesh\\server\\src\\server.js'
+    ],
+    memoryUsage: {
+      rss: 68218880,
+      heapTotal: 32960512,
+      heapUsed: 16730384,
+      external: 20878413,
+      arrayBuffers: 18262566
+    }
+  },
+  os: { loadavg: [ 0, 0, 0 ], uptime: 1431765.437 },
+  trace: [
+    {
+      column: 15,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Function._resolveFilename',
+      line: 1225,
+      method: '_resolveFilename',
+      native: false
+    },
+    {
+      column: 27,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Function._load',
+      line: 1055,
+      method: '_load',
+      native: false
+    },
+    {
+      column: 14,
+      file: 'node:diagnostics_channel',
+      function: 'TracingChannel.traceSync',
+      line: 322,
+      method: 'traceSync',
+      native: false
+    },
+    {
+      column: 24,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'wrapModuleLoad',
+      line: 220,
+      method: null,
+      native: false
+    },
+    {
+      column: 12,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module.require',
+      line: 1311,
+      method: 'require',
+      native: false
+    },
+    {
+      column: 16,
+      file: 'node:internal/modules/helpers',
+      function: 'require',
+      line: 136,
+      method: null,
+      native: false
+    },
+    {
+      column: 5,
+      file: 'D:\\Fatemeh\\PART\\JobMesh\\server\\src\\services\\Nats\\nats.service.js',
+      function: null,
+      line: 6,
+      method: null,
+      native: false
+    },
+    {
+      column: 14,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module._compile',
+      line: 1554,
+      method: '_compile',
+      native: false
+    },
+    {
+      column: 10,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Object..js',
+      line: 1706,
+      method: '.js',
+      native: false
+    },
+    {
+      column: 32,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module.load',
+      line: 1289,
+      method: 'load',
+      native: false
+    }
+  ],
+  timestamp: '2026-08-19T05:29:29.660Z'
+}
+{
+  message: "Cannot find module 'nats'\n" +
+    'Require stack:\n' +
+    '- D:\\Fatemeh\\PART\\JobMesh\\server\\src\\services\\Nats\\nats.service.js\n' +
+    '- D:\\Fatemeh\\PART\\JobMesh\\server\\src\\server.js',
+  level: 'error',
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    'D:\\Fatemeh\\PART\\JobMesh\\server\\src\\services\\Nats\\nats.service.js',
+    'D:\\Fatemeh\\PART\\JobMesh\\server\\src\\server.js'
+  ],
+  stack: "Error: Cannot find module 'nats'\n" +
+    'Require stack:\n' +
+    '- D:\\Fatemeh\\PART\\JobMesh\\server\\src\\services\\Nats\\nats.service.js\n' +
+    '- D:\\Fatemeh\\PART\\JobMesh\\server\\src\\server.js\n' +
+    '    at Function._resolveFilename (node:internal/modules/cjs/loader:1225:15)\n' +
+    '    at Function._load (node:internal/modules/cjs/loader:1055:27)\n' +
+    '    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:220:24)\n' +
+    '    at Module.require (node:internal/modules/cjs/loader:1311:12)\n' +
+    '    at require (node:internal/modules/helpers:136:16)\n' +
+    '    at Object.<anonymous> (D:\\Fatemeh\\PART\\JobMesh\\server\\src\\services\\Nats\\nats.service.js:6:5)\n' +
+    '    at Module._compile (node:internal/modules/cjs/loader:1554:14)\n' +
+    '    at Object..js (node:internal/modules/cjs/loader:1706:10)\n' +
+    '    at Module.load (node:internal/modules/cjs/loader:1289:32)',
+  timestamp: '2026-08-19T05:29:29.661Z'
+}
+{
+  message: 'Mongodb stage-db connection failed to mongodb+srv://fatimaalami7780_db_user:49lhEcKlEDeRFNtC@jobmeshcluster.8va9zkz.mongodb.net/',
+  level: 'error',
+  timestamp: '2026-08-19T05:31:35.337Z'
+}
