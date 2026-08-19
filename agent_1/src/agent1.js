@@ -1,4 +1,10 @@
 const express = require('express');
+
+const { spawn } = require('child_process');
+const path = require('path');
+
+const JOBS_DIRECTORY = 'D:\\Fatemeh\\PART\\JobMesh\\JobTest';
+
 const {
     connect,
     StringCodec,
@@ -8,6 +14,59 @@ const {
 
 const app = express();
 const PORT = 3001;
+
+// Execute a job file with Node.js
+const executeJob = (job) => {
+    return new Promise((resolve, reject) => {
+        const filePath = path.join(JOBS_DIRECTORY, job.fileName);
+
+        console.log(`Starting Job ${job.jobId}`);
+        console.log(`File: ${filePath}`);
+
+        const child = spawn('node', [filePath]);
+
+        let stdout = '';
+        let stderr = '';
+
+        child.stdout.on('data', (data) => {
+            stdout += data.toString();
+        });
+
+        child.stderr.on('data', (data) => {
+            stderr += data.toString();
+        });
+
+        const timeout = setTimeout(() => {
+            child.kill();
+
+            reject(new Error(`Job ${job.jobId} timed out`));
+        }, job.timeout * 1000);
+
+        child.on('close', (code) => {
+            clearTimeout(timeout);
+
+            if (code === 0) {
+                resolve({
+                    success: true,
+                    stdout,
+                    stderr
+                });
+            } else {
+                resolve({
+                    success: false,
+                    stdout,
+                    stderr
+                });
+            }
+        });
+
+        child.on('error', (error) => {
+            clearTimeout(timeout);
+            reject(error);
+        });
+    });
+};
+
 
 // Start Agent 1
 const startAgent = async () => {
@@ -82,9 +141,15 @@ const startAgent = async () => {
                 console.log('Received Job:');
                 console.log(job);
 
+                // Execute the received job
+                const result = await executeJob(job);
+
+                console.log('Job Result:');
+                console.log(result);
+
                 msg.ack();
             } catch (err) {
-                console.error('Invalid Job message:', err);
+                console.error('Job execution failed:', err);
                 msg.ack();
             }
         }
